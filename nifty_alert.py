@@ -37,24 +37,24 @@ prev_ma_200 = round(ma_200_list.iloc[-2], 2)
 
 def nifty_cross_alert(prev_low, prev_high, low, high, prev_ma_50, prev_ma_100, prev_ma_200, ma_50, ma_100, ma_200, ):
     #check 50 MA cross over
-    if (prev_low >= prev_ma_50) and (low <= ma_50):
+    if (prev_high >= prev_ma_50) and (low <= ma_50):
         nifty_alert("Nifty has crossed 50 MA from above", "fall")
         return
-    elif (prev_high <= prev_ma_50) and (high >= ma_50):
+    elif (prev_low <= prev_ma_50) and (high >= ma_50):
         nifty_alert("Nifty has crossed 50 MA from below", "rise")
         return
     #check 100 MA cross over
-    elif (prev_low >= prev_ma_100) and (low <= ma_100):
+    elif (prev_high >= prev_ma_100) and (low <= ma_100):
         nifty_alert("Nifty has crossed 100 MA from above", "fall")
         return
-    elif (prev_high <= prev_ma_100) and (high >= ma_100):
+    elif (prev_low <= prev_ma_100) and (high >= ma_100):
         nifty_alert("Nifty has crossed 100 MA from below", "rise")
         return
     #check 200 MA cross over
-    elif (prev_low >= prev_ma_200) and (low <= ma_200):
+    elif (prev_high >= prev_ma_200) and (low <= ma_200):
         nifty_alert("Nifty has crossed 200 MA from above", "fall")
         return
-    elif (prev_high <= prev_ma_200) and (high >= ma_200):
+    elif (prev_low <= prev_ma_200) and (high >= ma_200):
         nifty_alert("Nifty has crossed 200 MA from below", "rise")
         return
 
