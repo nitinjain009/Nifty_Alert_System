@@ -1,4 +1,4 @@
-# This workflow will run daily to check for Nifty alerts and send Telegram notifications
+# This workflow will run daily to check for Nifty alerts and send Telegram notification
 name: Nifty Alert System
 
 # Controls when the workflow will run
