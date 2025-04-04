@@ -1,14 +1,3 @@
-# This workflow will run daily to check for Nifty alerts
-
-name: Nifty Alert System
-
-
-
-on:
-  schedule:
-    - cron: '0 10 * * *'  # Runs daily at 02:30 AM UTC - change as needed.  10AM UTC is 3:30 PM IST
-  push: #optional, to run on push as well
-
 import os
 import yfinance as yf
 import pandas as pd
