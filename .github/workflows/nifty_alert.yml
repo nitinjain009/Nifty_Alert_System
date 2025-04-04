@@ -1,4 +1,4 @@
-# This workflow will run daily to check for Nifty alerts and send Telegram notification
+# This workflow will run daily to check for Nifty alerts and send Telegram notifications
 name: Nifty Alert System
 
 # Controls when the workflow will run
@@ -18,13 +18,13 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your workflow can access your code.  Crucial.
       - uses: actions/checkout@v4
-      
+
       # Sets up Python 3.9.  Required for running the Python script.
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
-      
+
       # Installs the necessary Python packages.  Essential for the script to function.
       - name: Install dependencies
         run: |
@@ -32,7 +32,15 @@ jobs:
           pip install yfinance pandas python-telegram-bot  # Install required libraries
           # If you have a requirements.txt file, use this instead:
           # pip install -r requirements.txt
-      
+
+      # Send a test message to Telegram
+      - name: Send Test Telegram Message
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python -c 'from telegram import Bot; bot = Bot(token="${TELEGRAM_BOT_TOKEN}"); bot.send_message(chat_id="${TELEGRAM_CHAT_ID}", text="GitHub Actions Test Message");'
+
       # Runs the Nifty alert script.  This is where the core logic is executed.
       - name: Run the Nifty alert script
         env:
