@@ -3,6 +3,8 @@ import yfinance as yf
 import os  # Import the os module for environment variables
 from telegram import Bot  # Import the Telegram Bot library
 
+
+
 def send_telegram_alert(message, alert_type):
     """
     Sends a Telegram alert message.
@@ -20,10 +22,11 @@ def send_telegram_alert(message, alert_type):
             bot.send_message(chat_id=telegram_chat_id, text=message)
             print(f"Telegram alert sent ({alert_type}): {message}")  # Improved logging
         except Exception as e:
-            print(f"Error sending Telegram alert: {e}")
+            print(f"Error sending Telegram alert: {e}")  # Use logging
     else:
         print(
-            f"Telegram alert not sent.  Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID. Message was: {message}"
+            "Telegram alert not sent.  Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID. Message was: %s"
+            % message,
         )
 
 
@@ -34,6 +37,7 @@ def check_nifty_alerts():
     and sends Telegram notifications.
     """
     nifty_symbol = "^NSEI"  # Corrected variable name for clarity
+
 
     try:
         ticker = yf.Ticker(nifty_symbol)
@@ -57,7 +61,7 @@ def check_nifty_alerts():
         prev_ma_50 = round(ma_50_list.iloc[-2], 2)
         ma_100_list = history['Close'].rolling(window=100).mean()
         ma_100 = round(ma_100_list.iloc[-1], 2)
-        prev_ma_100 = round(ma_ma_100_list.iloc[-2], 2)
+        prev_ma_100 = round(ma_100_list.iloc[-2], 2) # Changed from ma_ma_100_list to ma_100_list
         ma_200_list = history['Close'].rolling(window=200).mean()
         ma_200 = round(ma_200_list.iloc[-1], 2)
         prev_ma_200 = round(ma_200_list.iloc[-2], 2)
@@ -151,6 +155,7 @@ def is_close_to_52_week_high(high, ticker): # Changed to accept ticker
             send_telegram_alert("Nifty is within 10% of the 52-week high", "rise")
     except Exception as e:
         print(f"Error in is_close_to_52_week_high: {e}")
+
 
 
 
