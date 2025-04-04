@@ -1,4 +1,4 @@
-# This workflow will run daily to check for Nifty alerts
+# This workflow will run daily to check for Nifty alerts1
 
 name: Nifty Alert System
 
