@@ -26,7 +26,10 @@ jobs:
           #  If telegram_bot is in a separate file, make sure it's in the repository.
           #  For example: pip install -r requirements.txt
       - name: Run the Nifty alert script
-        env:set API_KEY=7685868146:AAEk5oOJ6hGwoyl__gv_3m52IAI_ko3TTnU GROUP_ID=711856868
+        env: API_KEY: ${{ secrets.API_KEY }}  # Assuming you've added API_KEY as a secret
+          GROUP_ID: ${{ secrets.GROUP_ID }} # Assuming you've added GROUP_ID as a secret
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           # Set any environment variables your script needs, such as Telegram bot token
           # TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           # TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
