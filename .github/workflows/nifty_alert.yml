@@ -1,9 +1,3 @@
-import os
-import yfinance as yf
-import pandas as pd
-from telegram import Bot  # Import the Telegram Bot library
-
-
 
 def check_nifty_alerts():
     """
