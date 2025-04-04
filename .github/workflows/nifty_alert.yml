@@ -2,36 +2,81 @@
 
 name: Nifty Alert System
 
+
+
 on:
   schedule:
     - cron: '0 10 * * *'  # Runs daily at 02:30 AM UTC - change as needed.  10AM UTC is 3:30 PM IST
   push: #optional, to run on push as well
-    branches:
-      - main
 
-jobs:
-  check_alerts:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.9  # Or a more recent version if you need it
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install yfinance pandas  # Install yfinance and pandas
-          #  Install any other dependencies, including telegram_bot, if needed.
-          #  If telegram_bot is in a separate file, make sure it's in the repository.
-          #  For example: pip install -r requirements.txt
-      - name: Run the Nifty alert script
-        env: os.environ.get("API_KEY")
-         # API_KEY: ${{ secrets.API_KEY }}
-         # GROUP_ID: ${{ secrets.GROUP_ID }}
-          #TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          #TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          # Set any environment variables your script needs, such as Telegram bot token
-          # TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          # TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python nifty_alert.py # change to the name of your main file.
+import os
+import yfinance as yf
+import pandas as pd
+from telegram import Bot  # Import the Telegram Bot library
+
+
+
+def check_nifty_alerts():
+    """
+    Fetches Nifty data, checks for alerts, and sends a Telegram message if an alert is triggered.
+    """
+    # 1. Access Environment Variables
+    api_key = os.environ.get("API_KEY")
+    group_id = os.environ.get("GROUP_ID")
+    telegram_bot_token = os.environ.get("TELEGRAM_BOT_TOKEN")
+    telegram_chat_id = os.environ.get("TELEGRAM_CHAT_ID")
+
+    # 2. Error Handling: Check for Missing Variables (CRITICAL)
+    if not all([api_key, group_id]):
+        print("Error: API_KEY or GROUP_ID environment variables are not set.")
+        print("Make sure you have configured these variables correctly, either as GitHub secrets or in your local environment.")
+        return  # Stop execution if essential variables are missing
+
+    if telegram_bot_token is None or telegram_chat_id is None:
+        print("Warning: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID environment variables are not set.")
+        print("Telegram alerts will be skipped.  Ensure these are set if you want Telegram notifications.")
+        send_telegram_alert = False  # Flag to control Telegram sending
+    else:
+        send_telegram_alert = True
+
+    # 3. Fetch Nifty Data
+    try:
+        nifty = yf.Ticker("^NSEI")
+        nifty_data = nifty.history(period="1d")  # Get the latest day's data
+    except Exception as e:
+        print(f"Error fetching Nifty data: {e}")
+        return  # Stop if data retrieval fails
+
+    # 4. Process Data and Check for Alerts
+    if not nifty_data.empty:
+        latest_price = nifty_data['Close'].iloc[-1]
+        print(f"Current Nifty closing price: {latest_price:.2f}")
+
+        # --- Your Alert Logic Here ---
+        alert_threshold_high = 18000
+        alert_threshold_low = 17500
+        alert_message = None
+
+        if latest_price > alert_threshold_high:
+            alert_message = f"Nifty Alert! Price is above {alert_threshold_high}: {latest_price:.2f}"
+        elif latest_price < alert_threshold_low:
+            alert_message = f"Nifty Alert! Price is below {alert_threshold_low}: {latest_price:.2f}"
+        # --- End of Alert Logic ---
+
+        # 5. Send Telegram Alert (if applicable)
+        if alert_message and send_telegram_alert:
+            try:
+                bot = Bot(token=telegram_bot_token)
+                bot.send_message(chat_id=telegram_chat_id, text=alert_message)
+                print("Telegram alert sent successfully.")
+            except Exception as e:
+                print(f"Error sending Telegram alert: {e}")
+        elif alert_message:
+            print(f"Alert triggered: {alert_message}.  Skipping Telegram due to missing credentials or other issue.")
+        else:
+            print("No Nifty alerts triggered today.")
+    else:
+        print("Error: No data received from yfinance.")
+
+if __name__ == "__main__":
+    check_nifty_alerts()
