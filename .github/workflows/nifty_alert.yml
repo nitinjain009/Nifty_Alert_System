@@ -1,0 +1,52 @@
+# This workflow will run daily to check for Nifty alerts
+            - name: Cache
+  uses: actions/cache@v4.2.3
+  with:
+    # A list of files, directories, and wildcard patterns to cache and restore
+    path: 
+    # An explicit key for restoring and saving the cache
+    key: 
+    # An ordered multiline string listing the prefix-matched keys, that are used for restoring stale cache if no cache hit occurred for key. Note `cache-hit` returns false in this case.
+    restore-keys: # optional
+    # The chunk size used to split up large files during upload, in bytes
+    upload-chunk-size: # optional
+    # An optional boolean when enabled, allows windows runners to save or restore caches that can be restored or saved respectively on other platforms
+    enableCrossOsArchive: # optional, default is false
+    # Fail the workflow if cache entry is not found
+    fail-on-cache-miss: # optional, default is false
+    # Check if a cache entry exists for the given input(s) (key, restore-keys) without downloading the cache
+    lookup-only: # optional, default is false
+    # Run the post step to save the cache even if another step before fails
+    save-always: # optional, default is false
+          
+name: Nifty Alert System
+
+on:
+  schedule:
+    - cron: '0 10 * * *'  # Runs daily at 02:30 AM UTC - change as needed.  10AM UTC is 3:30 PM IST
+  push: #optional, to run on push as well
+    branches:
+      - main
+
+jobs:
+  check_alerts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9  # Or a more recent version if you need it
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install yfinance pandas  # Install yfinance and pandas
+          #  Install any other dependencies, including telegram_bot, if needed.
+          #  If telegram_bot is in a separate file, make sure it's in the repository.
+          #  For example: pip install -r requirements.txt
+      - name: Run the Nifty alert script
+        env:
+          # Set any environment variables your script needs, such as Telegram bot token
+          # TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          # TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python nifty_alert.py # change to the name of your main file.
