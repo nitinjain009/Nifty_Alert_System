@@ -26,7 +26,7 @@ jobs:
           #  If telegram_bot is in a separate file, make sure it's in the repository.
           #  For example: pip install -r requirements.txt
       - name: Run the Nifty alert script
-        env:api_key = os.environ.get("API_KEY")
+        api_key = os.environ.get("API_KEY")
     group_id = os.environ.get("GROUP_ID")
     telegram_bot_token = os.environ.get("TELEGRAM_BOT_TOKEN")
     telegram_chat_id = os.environ.get("TELEGRAM_CHAT_ID")
