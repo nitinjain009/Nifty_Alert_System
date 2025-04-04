@@ -1,33 +1,43 @@
-# This workflow will run daily to check for Nifty alerts
-
+# This workflow will run daily to check for Nifty alerts and send Telegram notifications
 name: Nifty Alert System
 
+# Controls when the workflow will run
 on:
   schedule:
-    - cron: '0 10 * * *'  # Runs daily at 02:30 AM UTC - change as needed.  10AM UTC is 3:30 PM IST
-  push: #optional, to run on push as well
+    - cron: '0 10 * * *'  # Runs daily at 10:00 AM UTC (3:30 PM IST)
+  push: # Optional, to run on push as well
     branches:
       - main
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   check_alerts:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your workflow can access your code.  Crucial.
       - uses: actions/checkout@v4
+      
+      # Sets up Python 3.9.  Required for running the Python script.
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9  # Or a more recent version if you need it
+          python-version: 3.9
+      
+      # Installs the necessary Python packages.  Essential for the script to function.
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install yfinance pandas  # Install yfinance and pandas
-          #  Install any other dependencies, including telegram_bot, if needed.
-          #  If telegram_bot is in a separate file, make sure it's in the repository.
-          #  For example: pip install -r requirements.txt
+          python -m pip install --upgrade pip  # Ensure pip is up-to-date
+          pip install yfinance pandas python-telegram-bot  # Install required libraries
+          # If you have a requirements.txt file, use this instead:
+          # pip install -r requirements.txt
+      
+      # Runs the Nifty alert script.  This is where the core logic is executed.
       - name: Run the Nifty alert script
-        api_key = os.environ.get("API_KEY")
-    group_id = os.environ.get("GROUP_ID")
-    telegram_bot_token = os.environ.get("TELEGRAM_BOT_TOKEN")
-    telegram_chat_id = os.environ.get("TELEGRAM_CHAT_ID")
-        run: python nifty_alert.py # change to the name of your main file.
+        env:
+          API_KEY: ${{ secrets.API_KEY }}  #  Fetch from GitHub secrets
+          GROUP_ID: ${{ secrets.GROUP_ID }}  #    "
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}  #    "
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}  #    "
+        run: python nifty_alert.py  #  Execute the Python script
