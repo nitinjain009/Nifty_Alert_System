@@ -33,9 +33,12 @@ jobs:
           pip install python-telegram-bot requests
           # If you have a requirements.txt file, use this instead:
           # pip install -r requirements.txt
-
-
-
+     - name: Execute Telegram y Welcome Message
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: send-message-to-telegram.py
+       
       # Send a test message to Telegram
       - name: Send Test Telegram Message
         env:
