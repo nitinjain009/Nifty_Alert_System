@@ -15,5 +15,5 @@ def send_to_telegram(message):
     except Exception as e:
         print(e)
 
-send_to_telegram("Hello from Python!")
+send_to_telegram("Hello1 from Python!")
 
