@@ -36,10 +36,7 @@ jobs:
            
       # Send a test message to Telegram
       - name: Send Telegram Welcome Message
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: send-message-to-telegram.py
+        on: [push]
         
       - name: Send Test Telegram Message
         env:
