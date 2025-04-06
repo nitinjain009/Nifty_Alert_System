@@ -11,28 +11,26 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  send_telegram:
+  check_alerts:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your workflow can access your code.  Crucial.
+      - uses: actions/checkout@v4
 
       # Sets up Python 3.9.  Required for running the Python script.
-     # - name: Set up Python 3.9
-     #   uses: actions/setup-python@v4
-     #   with:
-     #     python-version: 3.9
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: 3.9
+
       # Installs the necessary Python packages.  Essential for the script to function.
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip  # Ensure pip is up-to-date
           pip install yfinance pandas python-telegram-bot  # Install required libraries
-          pip install python-telegram-bot requests  # Install both libraries
+          pip install python-telegram-bot requests
           # If you have a requirements.txt file, use this instead:
           # pip install -r requirements.txt
 
@@ -47,10 +45,10 @@ jobs:
           python -c 'from telegram import Bot; bot = Bot(token="${TELEGRAM_BOT_TOKEN}"); bot.send_message(chat_id="${TELEGRAM_CHAT_ID}", text="GitHub Actions Test Message");'
 
       # Runs the Nifty alert script.  This is where the core logic is executed.
-       name: Execute Nifty Alert Script
+     
+      - name: Execute Nifty Alert Script
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python3 nifty_alert.py
-
 
