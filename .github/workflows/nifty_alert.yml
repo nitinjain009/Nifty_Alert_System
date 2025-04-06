@@ -38,7 +38,7 @@ jobs:
      
       - name: Execute Nifty Alert Script
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_BOT_TOKEN: "8017759392:AAEwM-W-y83lLXTjlPl8sC_aBmizuIrFXnU"
+          TELEGRAM_CHAT_ID: "711856868"
         run: python3 nifty_alert.py
 
