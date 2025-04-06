@@ -1,5 +1,5 @@
 # send-message-to-telegram.py
-# by www.ShellHacks.com1
+# by www.ShellHacks.com
 
 import requests
 
@@ -15,4 +15,5 @@ def send_to_telegram(message):
     except Exception as e:
         print(e)
 
-send_to_telegram("Bot check from Python!")
+send_to_telegram("Hello from Python!")
+
