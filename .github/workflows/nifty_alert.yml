@@ -34,14 +34,6 @@ jobs:
           # If you have a requirements.txt file, use this instead:
           # pip install -r requirements.txt
               
-        
-      - name: Send Test Telegram Message
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: |
-          python -c 'from telegram import Bot; bot = Bot(token="8017759392:AAEwM-W-y83lLXTjlPl8sC_aBmizuIrFXnU"); bot.send_message(chat_id="711856868", text="GitHub Actions Test Message");'
-
       # Runs the Nifty alert script.  This is where the core logic is executed.
      
       - name: Execute Nifty Alert Script
