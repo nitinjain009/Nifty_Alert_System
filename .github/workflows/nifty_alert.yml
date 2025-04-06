@@ -33,26 +33,7 @@ jobs:
           pip install python-telegram-bot requests
           # If you have a requirements.txt file, use this instead:
           # pip install -r requirements.txt
-           
-      # Send a test message to Telegram
-      - name: Send Telegram Welcome Message
-        on: [push]
-        jobs:
-  send_telegram:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install python-telegram-bot requests  # Install both libraries
+              
         
       - name: Send Test Telegram Message
         env:
