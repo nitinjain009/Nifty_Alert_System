@@ -45,7 +45,7 @@ async def main():
     await bot.send_message(chat_id=chat_id, text="GitHub Actions Test Message")
 
 # Run the async function
-asyncio.run(main())
+#asyncio.run(main())
       # Send a test message to Telegram
       - name: Send Test Telegram Message
         env:
