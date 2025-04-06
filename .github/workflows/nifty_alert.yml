@@ -35,8 +35,6 @@ jobs:
 
 
 # Run the async function
-from telegram import Bot
-import asyncio
 
 async def main():
     # Replace these placeholders with your actual bot token and chat ID
