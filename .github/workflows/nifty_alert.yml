@@ -11,14 +11,11 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  check_alerts:
-    # The type of runner that the job will run on
+  send_telegram:
     runs-on: ubuntu-latest
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your workflow can access your code.  Crucial.
+      - name: Checkout repository
         uses: actions/checkout@v4
-
 
       # Sets up Python 3.9.  Required for running the Python script.
      # - name: Set up Python 3.9
