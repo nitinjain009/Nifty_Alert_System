@@ -35,6 +35,18 @@ jobs:
 
 
 # Run the async function
+from telegram import Bot
+import asyncio
+
+async def main():
+    # Replace these placeholders with your actual bot token and chat ID
+    bot = Bot(token="8017759392:AAEwM-W-y83lLXTjlPl8sC_aBmizuIrFXnU")
+    chat_id = "711856868"
+    
+    # Sending the message
+    await bot.send_message(chat_id=chat_id, text="GitHub Actions Test Message")
+
+# Run the async function
 asyncio.run(main())
       # Send a test message to Telegram
       - name: Send Test Telegram Message
@@ -52,17 +64,5 @@ asyncio.run(main())
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}  #    "
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}  #    "
         run: python nifty_alert.py  #  Execute the Python script
-from telegram import Bot
-import asyncio
 
-async def main():
-    # Replace these placeholders with your actual bot token and chat ID
-    bot = Bot(token="8017759392:AAEwM-W-y83lLXTjlPl8sC_aBmizuIrFXnU")
-    chat_id = "711856868"
-    
-    # Sending the message
-    await bot.send_message(chat_id=chat_id, text="GitHub Actions Test Message")
-
-# Run the async function
-asyncio.run(main())
 
