@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-GROUP_ID = os.getenv('GROUP_ID')
-bot = telebot.TeleBot(os.getenv('API_KEY'))
+GROUP_ID = 71185686
+bot = telebot.TeleBot("8017759392:AAEwM-W-y83lLXTjlPl8sC_aBmizuIrFXnU")
 
 rise_path = os.path.join(os.path.dirname(__file__), 'rise.png')
 fall_path = os.path.join(os.path.dirname(__file__), 'fall.png')
