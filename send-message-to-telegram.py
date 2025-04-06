@@ -1,5 +1,5 @@
 # send-message-to-telegram.py
-# by www.ShellHacks.com
+# by www.ShellHacks.coma
 
 import requests
 
